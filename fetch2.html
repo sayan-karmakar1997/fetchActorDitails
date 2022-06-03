@@ -1,0 +1,148 @@
+<html>
+
+<head>
+    <title>ActorDitails</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        html,
+        body,
+        #content {
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            position: absolute;
+            margin: 0;
+            padding: 0;
+        }
+
+        .btn {
+            background: #cdff03;
+            background-image: -webkit-linear-gradient(top, #cdff03, #2bb847);
+            background-image: -moz-linear-gradient(top, #cdff03, #2bb847);
+            background-image: -ms-linear-gradient(top, #cdff03, #2bb847);
+            background-image: -o-linear-gradient(top, #cdff03, #2bb847);
+            background-image: linear-gradient(to bottom, #cdff03, #2bb847);
+            -webkit-border-radius: 28;
+            -moz-border-radius: 28;
+            border-radius: 28px;
+            font-family: Arial;
+            color: #ffffff;
+            font-size: 20px;
+            padding: 10px 20px 10px 20px;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background: #3cfce2;
+            background-image: -webkit-linear-gradient(top, #3cfce2, #023302);
+            background-image: -moz-linear-gradient(top, #3cfce2, #023302);
+            background-image: -ms-linear-gradient(top, #3cfce2, #023302);
+            background-image: -o-linear-gradient(top, #3cfce2, #023302);
+            background-image: linear-gradient(to bottom, #3cfce2, #023302);
+            text-decoration: none;
+        }
+
+        table.customTable {
+            width: 100%;
+            background-color: #FFFFFF;
+            border-collapse: collapse;
+            border-width: 2px;
+            border-color: #7ea8f8;
+            border-style: solid;
+            color: #000000;
+        }
+
+        table.customTable td,
+        table.customTable th {
+            border-width: 2px;
+            border-color: #7ea8f8;
+            border-style: solid;
+            padding: 5px;
+        }
+
+        table.customTable thead {
+            background-color: #7ea8f8;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="content" class="parent">
+        <button id="btnfetchDetails" class="btn">Fetch Details</button>
+        <div id="details" class="match_parent">
+
+            <table id="tblResult" class="customTable">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Actor</th>
+                        <th>DOB</th>
+                        <th>Eye Color</th>
+                        <th>Hair Color</th>
+                        <th>Gender</th>
+                        <th>Image</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- <tr>
+                        <td> Harry Potter</td>
+                        <td> Daniel Radcliffe</td>
+                        <td> 31-07-1980</td>
+                        <td> green</td>
+                        <td> black</td>
+                        <td> male</td>
+                        <td> <img src="http://hp-api.herokuapp.com/images/harry.jpg" height="130" width="100" />
+                           </td> 
+                    </tr> -->
+                    
+                </tbody>
+            </table>
+
+
+
+        </div>
+    </div>
+    <script>
+        function renderItemHtml(item){
+            var html = `<tr>
+                        <td> ${item.name}</td>
+                        <td> ${item.actor}</td>
+                        <td> ${item.dateOfBirth}</td>
+                        <td> ${item.eyeColour}</td>
+                        <td> ${item.hairColour}</td>
+                        <td> ${item.gender}</td>
+                        <td> <img src="${item.image}" height="130" width="100" /> </td> 
+                    </tr>`;
+           return html;
+        }
+        function fetchDetails() {
+            $.get(
+                "http://hp-api.herokuapp.com/api/characters",
+                function (data, status) {
+                    // console.log("data ", data);
+                    // console.log("status ", status);
+                    var tableHtml = "";
+                    if (Array.isArray(data)) {
+                        data.forEach(function (item, index) {
+                            tableHtml+= renderItemHtml(item);
+                        })
+                        $('#tblResult').show();
+                        $('#tblResult tbody').html(tableHtml);
+                    }
+                }
+            );
+        }
+        $(document).ready(function () {
+            $('#tblResult').hide();
+
+            $("#btnfetchDetails").click(function () {
+                fetchDetails();
+            });
+        })
+
+
+    </script>
+</body>
+
+</html>
